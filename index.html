@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wipro Welcome Card Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f1222;
+      --panel: #171a2f;
+      --panel-2: #222744;
+      --text: #ffffff;
+      --muted: #c0c7ff;
+      --accent: #6f7cff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: #1a2440;
+      background: linear-gradient(180deg, #f5f8ff 0%, #edf3ff 100%);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .app {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 24px;
+    }
+
+    .panel {
+      font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(145deg, #ffffff 0%, #f3f7ff 100%);
+      border: 1px solid #d6e1ff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(72, 100, 160, 0.15);
+    }
+
+    .title {
+      margin: 0 0 6px;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      margin: 0 0 16px;
+      color: #546389;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .step {
+      border: 1px solid #d7e2ff;
+      border-radius: 12px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .step button.step-toggle {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: #24345d;
+      text-align: left;
+      padding: 13px 14px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .step-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #b9caff;
+      color: #5f74ff;
+      font-size: 13px;
+      font-weight: 700;
+      background: #f4f7ff;
+      flex-shrink: 0;
+    }
+
+    .step.active {
+      border-color: #8fa7ff;
+      box-shadow: 0 0 0 1px rgba(143, 167, 255, 0.22) inset;
+    }
+
+    .step.active .step-icon {
+      background: linear-gradient(120deg, #5f74ff 0%, #7b53ff 100%);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .step-content {
+      display: none;
+      padding: 0 14px 14px;
+      border-top: 1px solid #dbe5ff;
+    }
+
+    .step.active .step-content { display: block; }
+
+    .field { margin-top: 12px; }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      color: #4b5d8d;
+    }
+
+    input, select, textarea, .btn {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid #c7d6ff;
+      background: #ffffff;
+      color: #1f2b4d;
+      padding: 11px 12px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    textarea { min-height: 80px; resize: vertical; }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #8190ff;
+      box-shadow: 0 0 0 3px rgba(129, 144, 255, 0.2);
+    }
+
+    .file-field input[type="file"] {
+      border-style: dashed;
+      border-color: #9db3f5;
+      background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+      padding-left: 12px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .file-field input[type="file"]::file-selector-button {
+      border: none;
+      margin-right: 10px;
+      padding: 8px 12px;
+      border-radius: 9px;
+      background: linear-gradient(120deg, #5f74ff 0%, #7b53ff 100%);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn {
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s ease;
+      background: #ffffff;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn.primary {
+      background: linear-gradient(120deg, #5f74ff 0%, #7b53ff 100%);
+      border: none;
+      color: #fff;
+    }
+
+    .btn-row {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 12px;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .swatch {
+      height: 56px;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+
+    .swatch.active { border-color: #fff; }
+
+    .preview-wrap {
+      background: #ffffff;
+      border: 1px solid #313b73;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 740px;
+    }
+
+    .card {
+      width: 360px;
+      height: 640px;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, #f75262 0%, #ad50d8 100%);
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.2);
+      padding: 22px 20px;
+      text-align: center;
+    }
+
+    .logo {
+      position: absolute;
+      right: 22px;
+      top: 22px;
+      width: 94px;
+      object-fit: contain;
+      opacity: 0.95;
+    }
+
+    .photo-frame {
+      margin: 105px auto 32px;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #c7d8e7;
+      position: relative;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .placeholder-scene {
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 50% 35%, #f2f2f2 0 24%, transparent 25%),
+        linear-gradient(to top, #88af00 0 20%, #bbd88d 20% 32%, #d6ebf8 32% 100%);
+    }
+
+    .name {
+      margin: 0;
+      font-size: 48px;
+      line-height: 1;
+      font-weight: 800;
+      color: #fff;
+      transform: scale(0.6);
+      transform-origin: center top;
+      width: 200%;
+      margin-left: -50%;
+    }
+
+    .designation {
+      margin: 6px 0 0;
+      font-size: 34px;
+      font-weight: 700;
+      color: #fff;
+      transform: scale(0.7);
+      transform-origin: center top;
+      width: 200%;
+      margin-left: -50%;
+    }
+
+    .message {
+      margin: 36px 10px 0;
+      font-size: 56px;
+      line-height: 1.2;
+      color: #e8f1e8;
+      font-style: italic;
+      transform: scale(0.5);
+      transform-origin: center top;
+      width: 200%;
+      margin-left: -50%;
+    }
+
+    .tiny {
+      color: #6579a8;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 980px) {
+      .app { grid-template-columns: 1fr; }
+      .preview-wrap { min-height: 460px; }
+      .card { transform: scale(0.82); transform-origin: center center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="panel">
+      <h1 class="title">Welcome Card Builder</h1>
+      <p class="subtitle">5-step flow: Excel/Name > Background > Photo > Preview > Share</p>
+
+      <div class="steps" id="steps">
+        <div class="step active" data-step="1">
+          <button class="step-toggle" type="button"><span class="step-icon">1</span>Upload Excel / Enter Name & Designation</button>
+          <div class="step-content">
+            <div class="field file-field">
+              <label for="excelUpload">Excel Upload (.xlsx, .xls) - columns: name, designation, message (optional)</label>
+              <input id="excelUpload" type="file" accept=".xlsx,.xls" />
+            </div>
+            <div class="field">
+              <label for="nameInput">Name</label>
+              <input id="nameInput" placeholder="Srilatha Kamble" />
+            </div>
+            <div class="field">
+              <label for="designationInput">Designation</label>
+              <input id="designationInput" placeholder="Sr. Web Developer" />
+            </div>
+            <div class="field">
+              <label for="messageInput">Message</label>
+              <textarea id="messageInput">I am excited to join Wipro!</textarea>
+            </div>
+            <div class="btn-row">
+              <button class="btn" data-next="2">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="step" data-step="2">
+          <button class="step-toggle" type="button"><span class="step-icon">2</span>Select Background</button>
+          <div class="step-content">
+            <div class="swatches" id="swatches"></div>
+            <div class="tiny">Choose any linear gradient background.</div>
+            <div class="btn-row"><button class="btn" data-next="3">Next</button></div>
+          </div>
+        </div>
+
+        <div class="step" data-step="3">
+          <button class="step-toggle" type="button"><span class="step-icon">3</span>Upload Photo</button>
+          <div class="step-content">
+            <div class="field file-field">
+              <label for="photoUpload">Upload profile photo</label>
+              <input id="photoUpload" type="file" accept="image/*" />
+            </div>
+            <div class="btn-row"><button class="btn" data-next="4">Next</button></div>
+          </div>
+        </div>
+
+        <div class="step" data-step="4">
+          <button class="step-toggle" type="button"><span class="step-icon">4</span>Preview</button>
+          <div class="step-content">
+            <button class="btn primary" id="downloadBtn">Download Preview PNG</button>
+            <div class="btn-row"><button class="btn" data-next="5">Next</button></div>
+          </div>
+        </div>
+
+        <div class="step" data-step="5">
+          <button class="step-toggle" type="button"><span class="step-icon">5</span>Share (LinkedIn / Instagram)</button>
+          <div class="step-content">
+            <button class="btn primary" id="shareLinkedinBtn">Share to LinkedIn</button>
+            <div style="height:8px"></div>
+            <button class="btn primary" id="shareInstaBtn">Share to Instagram</button>
+            <p class="tiny">Instagram web does not allow direct image post via browser. This button downloads image + copies caption so you can upload quickly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="preview-wrap">
+      <div class="card" id="card">
+        <img class="logo" id="logoImg" src="./wipro-logo.png" alt="Wipro logo" />
+        <div class="photo-frame" id="photoFrame">
+          <div class="placeholder-scene" id="placeholder"></div>
+          <img id="profileImg" alt="Profile" style="display:none;" />
+        </div>
+        <h2 class="name" id="previewName">Srilatha Kamble</h2>
+        <h3 class="designation" id="previewDesignation">Sr. Web Developer</h3>
+        <p class="message" id="previewMessage">I am excited to join Wipro!</p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const gradients = [
+      "linear-gradient(180deg, #f75262 0%, #ad50d8 100%)",
+      "linear-gradient(180deg, #2d79ff 0%, #7c52ff 100%)",
+      "linear-gradient(180deg, #16c79a 0%, #4d76ff 100%)",
+      "linear-gradient(180deg, #ff7f50 0%, #ff3f8e 100%)",
+      "linear-gradient(180deg, #00b4db 0%, #8f00ff 100%)",
+      "linear-gradient(180deg, #f093fb 0%, #f5576c 100%)"
+    ];
+
+    const state = {
+      step: 1,
+      selectedGradient: gradients[0],
+      profileDataUrl: null,
+      exportedBlob: null
+    };
+
+    const steps = Array.from(document.querySelectorAll(".step"));
+    const swatches = document.getElementById("swatches");
+    const card = document.getElementById("card");
+    const nameInput = document.getElementById("nameInput");
+    const designationInput = document.getElementById("designationInput");
+    const messageInput = document.getElementById("messageInput");
+    const previewName = document.getElementById("previewName");
+    const previewDesignation = document.getElementById("previewDesignation");
+    const previewMessage = document.getElementById("previewMessage");
+    const excelUpload = document.getElementById("excelUpload");
+    const photoUpload = document.getElementById("photoUpload");
+    const profileImg = document.getElementById("profileImg");
+    const logoImg = document.getElementById("logoImg");
+    const placeholder = document.getElementById("placeholder");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const shareLinkedinBtn = document.getElementById("shareLinkedinBtn");
+    const shareInstaBtn = document.getElementById("shareInstaBtn");
+
+    function setStep(step) {
+      state.step = step;
+      steps.forEach((el) => el.classList.toggle("active", Number(el.dataset.step) === step));
+    }
+
+    function renderPreview() {
+      previewName.textContent = nameInput.value.trim() || "Your Name";
+      previewDesignation.textContent = designationInput.value.trim() || "Your Designation";
+      previewMessage.textContent = messageInput.value.trim() || "I am excited to join Wipro!";
+      card.style.background = state.selectedGradient;
+    }
+
+    function renderSwatches() {
+      swatches.innerHTML = "";
+      gradients.forEach((gradient) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "swatch";
+        btn.style.background = gradient;
+        if (gradient === state.selectedGradient) btn.classList.add("active");
+        btn.addEventListener("click", () => {
+          state.selectedGradient = gradient;
+          document.querySelectorAll(".swatch").forEach((s) => s.classList.remove("active"));
+          btn.classList.add("active");
+          renderPreview();
+        });
+        swatches.appendChild(btn);
+      });
+    }
+
+    function removeBlackBackgroundFromLogo(imgEl) {
+      const process = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = imgEl.naturalWidth;
+        canvas.height = imgEl.naturalHeight;
+        const ctx = canvas.getContext("2d");
+        if (!ctx || !canvas.width || !canvas.height) return;
+
+        ctx.drawImage(imgEl, 0, 0);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const pixels = imageData.data;
+
+        for (let i = 0; i < pixels.length; i += 4) {
+          const r = pixels[i];
+          const g = pixels[i + 1];
+          const b = pixels[i + 2];
+          const isNearBlack = r < 35 && g < 35 && b < 35;
+          if (isNearBlack) {
+            pixels[i + 3] = 0;
+          }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+        imgEl.src = canvas.toDataURL("image/png");
+      };
+
+      if (imgEl.complete) {
+        process();
+      } else {
+        imgEl.addEventListener("load", process, { once: true });
+      }
+    }
+
+    async function exportCardBlob() {
+      const canvas = await html2canvas(card, {
+        scale: 2,
+        backgroundColor: null,
+        useCORS: true
+      });
+      return new Promise((resolve) => canvas.toBlob(resolve, "image/png", 1));
+    }
+
+    function downloadBlob(blob, fileName) {
+      const a = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function makeCaption() {
+      const n = previewName.textContent;
+      const d = previewDesignation.textContent;
+      return `Excited to join Wipro!\n${n} - ${d}\n#Wipro #NewBeginnings`;
+    }
+
+    steps.forEach((stepEl) => {
+      const toggle = stepEl.querySelector(".step-toggle");
+      toggle.addEventListener("click", () => setStep(Number(stepEl.dataset.step)));
+    });
+
+    document.querySelectorAll("[data-next]").forEach((btn) => {
+      btn.addEventListener("click", () => setStep(Number(btn.dataset.next)));
+    });
+
+    [nameInput, designationInput, messageInput].forEach((input) =>
+      input.addEventListener("input", renderPreview)
+    );
+
+    excelUpload.addEventListener("change", async (event) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data);
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+      if (!rows.length) return;
+      const row = rows[0];
+      const normalized = Object.fromEntries(
+        Object.entries(row).map(([k, v]) => [String(k).trim().toLowerCase(), v])
+      );
+      nameInput.value = normalized.name || nameInput.value;
+      designationInput.value = normalized.designation || designationInput.value;
+      messageInput.value = normalized.message || messageInput.value;
+      renderPreview();
+      alert("Excel imported from first row.");
+    });
+
+    photoUpload.addEventListener("change", (event) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        state.profileDataUrl = reader.result;
+        profileImg.src = state.profileDataUrl;
+        profileImg.style.display = "block";
+        placeholder.style.display = "none";
+      };
+      reader.readAsDataURL(file);
+    });
+
+    downloadBtn.addEventListener("click", async () => {
+      const blob = await exportCardBlob();
+      if (!blob) return;
+      state.exportedBlob = blob;
+      const safeName = (previewName.textContent || "welcome-card").replace(/\s+/g, "-").toLowerCase();
+      downloadBlob(blob, `${safeName}-welcome-card.png`);
+    });
+
+    shareLinkedinBtn.addEventListener("click", async () => {
+      if (!state.exportedBlob) state.exportedBlob = await exportCardBlob();
+      const caption = makeCaption();
+      await navigator.clipboard.writeText(caption).catch(() => {});
+      const shareUrl = "https://www.linkedin.com/feed/";
+      window.open(shareUrl, "_blank", "noopener");
+      alert("LinkedIn opened. Caption copied to clipboard and image downloaded.");
+      const safeName = (previewName.textContent || "welcome-card").replace(/\s+/g, "-").toLowerCase();
+      downloadBlob(state.exportedBlob, `${safeName}-welcome-card.png`);
+    });
+
+    shareInstaBtn.addEventListener("click", async () => {
+      if (!state.exportedBlob) state.exportedBlob = await exportCardBlob();
+      const caption = makeCaption();
+      await navigator.clipboard.writeText(caption).catch(() => {});
+      const safeName = (previewName.textContent || "welcome-card").replace(/\s+/g, "-").toLowerCase();
+      downloadBlob(state.exportedBlob, `${safeName}-welcome-card.png`);
+      window.open("https://www.instagram.com/", "_blank", "noopener");
+      alert("Instagram opened. Image downloaded and caption copied.");
+    });
+
+    renderSwatches();
+    renderPreview();
+    removeBlackBackgroundFromLogo(logoImg);
+  </script>
+</body>
+</html>
