@@ -7,7 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     :root {
@@ -59,129 +58,6 @@
       color: #546389;
       font-size: 13px;
       font-weight: 500;
-    }
-
-    .mode-toggle {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .mode-btn {
-      border: 1px solid #c7d6ff;
-      background: #fff;
-      color: #405684;
-      border-radius: 10px;
-      padding: 9px 10px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .mode-btn.active {
-      color: #fff;
-      border-color: transparent;
-      background: linear-gradient(120deg, #5f74ff 0%, #7b53ff 100%);
-    }
-
-    .excel-help {
-      margin-top: 10px;
-      border: 1px solid #d7e2ff;
-      background: #f8fbff;
-      border-radius: 10px;
-      padding: 10px;
-      font-size: 12px;
-      color: #4f628e;
-      line-height: 1.5;
-    }
-
-    .excel-status {
-      margin-top: 8px;
-      border-radius: 10px;
-      padding: 9px 10px;
-      font-size: 12px;
-      font-weight: 600;
-      background: #fff7e8;
-      color: #8c6a28;
-      border: 1px solid #f4ddb1;
-    }
-
-    .excel-status.ok {
-      background: #effbf3;
-      border-color: #bce9c9;
-      color: #1f7a3f;
-    }
-
-    .excel-status.error {
-      background: #fff1f1;
-      border-color: #f1c1c1;
-      color: #a23939;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .gallery {
-      margin-top: 10px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      max-height: 300px;
-      overflow: auto;
-      padding-right: 4px;
-    }
-
-    .gallery-item {
-      border: 1px solid #d7e2ff;
-      border-radius: 10px;
-      background: #fff;
-      padding: 8px;
-    }
-
-    .gallery-item img {
-      width: 100%;
-      border-radius: 8px;
-      display: block;
-    }
-
-    .gallery-item .meta {
-      margin-top: 6px;
-      font-size: 11px;
-      color: #4b5d8d;
-      font-weight: 600;
-    }
-
-    .data-preview {
-      margin-top: 10px;
-      border: 1px solid #d7e2ff;
-      border-radius: 10px;
-      background: #fff;
-      overflow: auto;
-      max-height: 220px;
-    }
-
-    .data-preview table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-      color: #344a78;
-    }
-
-    .data-preview th,
-    .data-preview td {
-      border-bottom: 1px solid #edf2ff;
-      padding: 8px 9px;
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    .data-preview th {
-      background: #f7f9ff;
-      font-weight: 700;
-      position: sticky;
-      top: 0;
     }
 
     .steps {
@@ -444,35 +320,13 @@
   <div class="app">
     <section class="panel">
       <h1 class="title">Welcome Card Builder</h1>
-      <p class="subtitle">4-step flow: Excel/Name+Photo > Background > Preview > Share</p>
+      <p class="subtitle">4-step flow: Name + Photo &gt; Background &gt; Preview &gt; Share</p>
 
       <div class="steps" id="steps">
         <div class="step active" data-step="1">
-          <button class="step-toggle" type="button"><span class="step-icon">1</span>Enter Name & Designation</button>
+          <button class="step-toggle" type="button"><span class="step-icon">1</span>Name, Photo &amp; Message</button>
           <div class="step-content">
-            <div class="field">
-              <label>Card Mode</label>
-              <div class="mode-toggle">
-                <button type="button" class="mode-btn active" data-mode="single">Single Card</button>
-                <button type="button" class="mode-btn" data-mode="multiple">Multiple Cards</button>
-              </div>
-            </div>
-            <div id="excelSection" class="hidden">
-              <div class="excel-help" id="excelRequirements">
-                Required columns for Single mode: <strong>name</strong>, <strong>designation</strong>. Optional: <strong>message</strong>.
-              </div>
-              <div class="excel-status" id="excelStatus">Upload an Excel file to validate format.</div>
-              <div class="field file-field">
-                <label for="excelUpload">Excel Upload (.xlsx, .xls)</label>
-                <input id="excelUpload" type="file" accept=".xlsx,.xls" />
-              </div>
-              <div class="field file-field" id="multiPhotoSection">
-                <label for="multiPhotoUpload">Upload all user photos (match Excel photo names)</label>
-                <input id="multiPhotoUpload" type="file" accept="image/*" multiple />
-              </div>
-              <div class="data-preview hidden" id="excelDataPreview"></div>
-            </div>
-            <div class="field file-field" id="singlePhotoSection">
+            <div class="field file-field">
               <label for="photoUpload">Upload profile photo</label>
               <input id="photoUpload" type="file" accept="image/*" />
             </div>
@@ -507,10 +361,6 @@
           <button class="step-toggle" type="button"><span class="step-icon">3</span>Preview</button>
           <div class="step-content">
             <button class="btn primary" id="downloadBtn">Download Preview PNG</button>
-            <div style="height:8px"></div>
-            <button class="btn primary hidden" id="generateMultipleBtn">Generate All Cards Preview</button>
-            <div class="tiny hidden" id="multipleHelp">Photo column supports uploaded photo filename only (example: anita.jpg).</div>
-            <div class="gallery hidden" id="multipleGallery"></div>
             <div class="btn-row"><button class="btn" data-next="4">Next</button></div>
           </div>
         </div>
@@ -555,10 +405,7 @@
       step: 1,
       selectedGradient: gradients[0],
       profileDataUrl: null,
-      exportedBlob: null,
-      cardMode: "single",
-      excelRows: [],
-      photoFileMap: {}
+      exportedBlob: null
     };
 
     const steps = Array.from(document.querySelectorAll(".step"));
@@ -570,25 +417,13 @@
     const previewName = document.getElementById("previewName");
     const previewDesignation = document.getElementById("previewDesignation");
     const previewMessage = document.getElementById("previewMessage");
-    const excelUpload = document.getElementById("excelUpload");
-    const excelSection = document.getElementById("excelSection");
-    const excelDataPreview = document.getElementById("excelDataPreview");
-    const excelRequirements = document.getElementById("excelRequirements");
-    const excelStatus = document.getElementById("excelStatus");
     const photoUpload = document.getElementById("photoUpload");
-    const singlePhotoSection = document.getElementById("singlePhotoSection");
-    const multiPhotoSection = document.getElementById("multiPhotoSection");
-    const multiPhotoUpload = document.getElementById("multiPhotoUpload");
     const profileImg = document.getElementById("profileImg");
     const logoImg = document.getElementById("logoImg");
     const placeholder = document.getElementById("placeholder");
     const downloadBtn = document.getElementById("downloadBtn");
-    const generateMultipleBtn = document.getElementById("generateMultipleBtn");
-    const multipleHelp = document.getElementById("multipleHelp");
-    const multipleGallery = document.getElementById("multipleGallery");
     const shareLinkedinBtn = document.getElementById("shareLinkedinBtn");
     const shareInstaBtn = document.getElementById("shareInstaBtn");
-    const modeButtons = Array.from(document.querySelectorAll(".mode-btn"));
 
     function setStep(step) {
       state.step = step;
@@ -618,93 +453,6 @@
         });
         swatches.appendChild(btn);
       });
-    }
-
-    function normalizeRowKeys(row) {
-      return Object.fromEntries(
-        Object.entries(row).map(([k, v]) => [String(k).trim().toLowerCase(), v])
-      );
-    }
-
-    function getRequiredColumns() {
-      return state.cardMode === "multiple"
-        ? ["name", "designation", "photo"]
-        : ["name", "designation"];
-    }
-
-    function setExcelStatus(type, message) {
-      excelStatus.className = `excel-status${type ? ` ${type}` : ""}`;
-      excelStatus.textContent = message;
-    }
-
-    function updateRequirementsText() {
-      if (state.cardMode === "multiple") {
-        excelRequirements.innerHTML = "Required columns for Multiple mode: <strong>name</strong>, <strong>designation</strong>, <strong>photo</strong> (uploaded photo file name only, e.g. <strong>anita.jpg</strong>). Optional: <strong>message</strong>.";
-      } else {
-        excelRequirements.innerHTML = "Single mode is manual entry. Excel is not required.";
-      }
-    }
-
-    function syncModeUI() {
-      const isMultiple = state.cardMode === "multiple";
-      excelSection.classList.toggle("hidden", !isMultiple);
-      singlePhotoSection.classList.toggle("hidden", isMultiple);
-      multiPhotoSection.classList.toggle("hidden", !isMultiple);
-      generateMultipleBtn.classList.toggle("hidden", !isMultiple);
-      multipleHelp.classList.toggle("hidden", !isMultiple);
-      multipleGallery.classList.toggle("hidden", !isMultiple);
-      if (!isMultiple) {
-        excelUpload.value = "";
-        state.excelRows = [];
-        multipleGallery.innerHTML = "";
-        excelDataPreview.innerHTML = "";
-        excelDataPreview.classList.add("hidden");
-      }
-    }
-
-    function renderExcelDataPreview(rows) {
-      if (!rows.length) {
-        excelDataPreview.innerHTML = "";
-        excelDataPreview.classList.add("hidden");
-        return;
-      }
-
-      const headers = Object.keys(rows[0]);
-      const headerHtml = headers.map((h) => `<th>${h}</th>`).join("");
-      const rowHtml = rows.map((row) => {
-        const cols = headers.map((h) => `<td>${String(row[h] ?? "")}</td>`).join("");
-        return `<tr>${cols}</tr>`;
-      }).join("");
-
-      excelDataPreview.innerHTML = `<table><thead><tr>${headerHtml}</tr></thead><tbody>${rowHtml}</tbody></table>`;
-      excelDataPreview.classList.remove("hidden");
-    }
-
-    function validateExcelRows(rows) {
-      if (!rows.length) {
-        return { ok: false, message: "No rows found in Excel." };
-      }
-
-      const normalizedRows = rows.map(normalizeRowKeys);
-      const required = getRequiredColumns();
-      const headers = Object.keys(normalizedRows[0]);
-      const missing = required.filter((col) => !headers.includes(col));
-      if (missing.length) {
-        return { ok: false, message: `Missing required columns: ${missing.join(", ")}` };
-      }
-
-      for (let i = 0; i < normalizedRows.length; i += 1) {
-        const row = normalizedRows[i];
-        const hasAll = required.every((col) => String(row[col] ?? "").trim());
-        if (!hasAll) {
-          return { ok: false, message: `Row ${i + 2} has empty required values.` };
-        }
-        if (state.cardMode === "multiple" && /^https?:\/\//i.test(String(row.photo || "").trim())) {
-          return { ok: false, message: `Row ${i + 2} photo must be a filename, not an image URL.` };
-        }
-      }
-
-      return { ok: true, normalizedRows, message: `Excel looks good. ${normalizedRows.length} row(s) ready for ${state.cardMode} mode.` };
     }
 
     function removeBlackBackgroundFromLogo(imgEl) {
@@ -749,52 +497,6 @@
       return new Promise((resolve) => canvas.toBlob(resolve, "image/png", 1));
     }
 
-    function resolvePhotoSource(photoValue) {
-      const key = String(photoValue || "").trim();
-      if (!key) return null;
-      return state.photoFileMap[key.toLowerCase()] || null;
-    }
-
-    async function buildCardPreviewDataUrl(row) {
-      const cardClone = card.cloneNode(true);
-      cardClone.id = "";
-      cardClone.style.position = "fixed";
-      cardClone.style.left = "-9999px";
-      cardClone.style.top = "0";
-      document.body.appendChild(cardClone);
-
-      cardClone.style.background = state.selectedGradient;
-      const cName = cardClone.querySelector("#previewName");
-      const cDesignation = cardClone.querySelector("#previewDesignation");
-      const cMessage = cardClone.querySelector("#previewMessage");
-      const cPhoto = cardClone.querySelector("#profileImg");
-      const cPlaceholder = cardClone.querySelector("#placeholder");
-      const cLogo = cardClone.querySelector("#logoImg");
-
-      cName.textContent = row.name || "Your Name";
-      cDesignation.textContent = row.designation || "Your Designation";
-      cMessage.textContent = row.message || "I am excited to join Wipro!";
-      cLogo.src = logoImg.src;
-
-      const photoSrc = resolvePhotoSource(row.photo);
-      if (photoSrc) {
-        cPhoto.src = photoSrc;
-        cPhoto.style.display = "block";
-        cPlaceholder.style.display = "none";
-      } else {
-        cPhoto.style.display = "none";
-        cPlaceholder.style.display = "block";
-      }
-
-      const canvas = await html2canvas(cardClone, {
-        scale: 1,
-        backgroundColor: null,
-        useCORS: true
-      });
-      cardClone.remove();
-      return canvas.toDataURL("image/png");
-    }
-
     function downloadBlob(blob, fileName) {
       const a = document.createElement("a");
       const url = URL.createObjectURL(blob);
@@ -817,18 +519,6 @@
       toggle.addEventListener("click", () => setStep(Number(stepEl.dataset.step)));
     });
 
-    modeButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        state.cardMode = btn.dataset.mode;
-        modeButtons.forEach((b) => b.classList.toggle("active", b === btn));
-        updateRequirementsText();
-        syncModeUI();
-        if (state.cardMode === "multiple") {
-          setExcelStatus("", "Upload an Excel file to validate format.");
-        }
-      });
-    });
-
     document.querySelectorAll("[data-next]").forEach((btn) => {
       btn.addEventListener("click", () => setStep(Number(btn.dataset.next)));
     });
@@ -836,32 +526,6 @@
     [nameInput, designationInput, messageInput].forEach((input) =>
       input.addEventListener("input", renderPreview)
     );
-
-    excelUpload.addEventListener("change", async (event) => {
-      if (state.cardMode !== "multiple") return;
-      const file = event.target.files?.[0];
-      if (!file) return;
-      const data = await file.arrayBuffer();
-      const workbook = XLSX.read(data);
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
-      const validation = validateExcelRows(rows);
-      if (!validation.ok) {
-        state.excelRows = [];
-        setExcelStatus("error", `Will not work: ${validation.message}`);
-        renderExcelDataPreview([]);
-        return;
-      }
-
-      state.excelRows = validation.normalizedRows;
-      const row = state.excelRows[0];
-      nameInput.value = row.name || nameInput.value;
-      designationInput.value = row.designation || designationInput.value;
-      messageInput.value = row.message || messageInput.value;
-      renderPreview();
-      setExcelStatus("ok", `Will work: ${validation.message}`);
-      renderExcelDataPreview(state.excelRows);
-    });
 
     photoUpload.addEventListener("change", (event) => {
       const file = event.target.files?.[0];
@@ -876,43 +540,12 @@
       reader.readAsDataURL(file);
     });
 
-    multiPhotoUpload.addEventListener("change", (event) => {
-      Object.values(state.photoFileMap).forEach((url) => {
-        if (String(url).startsWith("blob:")) URL.revokeObjectURL(url);
-      });
-      state.photoFileMap = {};
-      const files = Array.from(event.target.files || []);
-      files.forEach((file) => {
-        state.photoFileMap[file.name.toLowerCase()] = URL.createObjectURL(file);
-      });
-      if (state.cardMode === "multiple") {
-        setExcelStatus("", `${files.length} photo file(s) loaded for filename matching.`);
-      }
-    });
-
     downloadBtn.addEventListener("click", async () => {
       const blob = await exportCardBlob();
       if (!blob) return;
       state.exportedBlob = blob;
       const safeName = (previewName.textContent || "welcome-card").replace(/\s+/g, "-").toLowerCase();
       downloadBlob(blob, `${safeName}-welcome-card.png`);
-    });
-
-    generateMultipleBtn.addEventListener("click", async () => {
-      if (state.cardMode !== "multiple") return;
-      if (!state.excelRows.length) {
-        alert("Upload valid multiple-mode Excel first.");
-        return;
-      }
-
-      multipleGallery.innerHTML = "";
-      for (const row of state.excelRows) {
-        const imageUrl = await buildCardPreviewDataUrl(row);
-        const item = document.createElement("div");
-        item.className = "gallery-item";
-        item.innerHTML = `<img src="${imageUrl}" alt="Card preview" /><div class="meta">${row.name} - ${row.designation}</div>`;
-        multipleGallery.appendChild(item);
-      }
     });
 
     shareLinkedinBtn.addEventListener("click", async () => {
@@ -938,8 +571,6 @@
 
     renderSwatches();
     renderPreview();
-    syncModeUI();
-    updateRequirementsText();
     removeBlackBackgroundFromLogo(logoImg);
   </script>
 </body>
