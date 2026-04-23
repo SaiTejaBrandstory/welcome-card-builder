@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome Card Builder</title>
+  <link href="https://fonts.cdnfonts.com/css/proxima-nova-2" rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -22,7 +23,7 @@
 
     body {
       margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Proxima Nova", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       color: #1a2440;
       background: linear-gradient(180deg, #f5f8ff 0%, #edf3ff 100%);
       min-height: 100vh;
@@ -38,7 +39,7 @@
     }
 
     .panel {
-      font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Proxima Nova", "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(145deg, #ffffff 0%, #f3f7ff 100%);
       border: 1px solid #d6e1ff;
       border-radius: 16px;
@@ -48,7 +49,7 @@
 
     .title {
       margin: 0 0 2rem;
-      font-family: "Manrope", "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Proxima Nova", "Manrope", "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       font-size: 31px;
       font-weight: 800;
       line-height: 1.22;
@@ -192,6 +193,20 @@
       color: #fff;
     }
 
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+
+    .download-btn svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
     .share-btn {
       display: inline-flex;
       align-items: center;
@@ -333,7 +348,7 @@
     .name {
       margin: 0;
       font-size: 48px;
-      line-height: 1;
+      line-height: 0.92;
       font-weight: 800;
       color: #fff;
       transform: scale(0.6);
@@ -343,7 +358,7 @@
     }
 
     .designation {
-      margin: 6px 0 0;
+      margin: -2px 0 0;
       font-size: 34px;
       font-weight: 700;
       color: #fff;
@@ -411,20 +426,13 @@
         </div>
 
         <div class="step" data-step="3">
-          <button class="step-toggle" type="button"><span class="step-icon">3</span>Share (LinkedIn / Instagram)</button>
+          <button class="step-toggle" type="button"><span class="step-icon">3</span>Download Post</button>
           <div class="step-content">
-            <button class="btn primary share-btn" id="shareLinkedinBtn">
-              <span class="icon-chip" aria-hidden="true">
-                <img src="./linkedin-icon.svg" alt="LinkedIn" />
-              </span>
-              <span>Share to LinkedIn</span>
-            </button>
-            <div style="height:8px"></div>
-            <button class="btn primary share-btn" id="shareInstaBtn">
-              <span class="icon-chip" aria-hidden="true">
-                <img src="./instagram-icon.svg" alt="Instagram" />
-              </span>
-              <span>Share to Instagram</span>
+            <button class="btn primary download-btn" id="downloadBtn">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3v10m0 0l-4-4m4 4l4-4M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Download Post</span>
             </button>
           </div>
         </div>
@@ -473,8 +481,7 @@
     const profileImg = document.getElementById("profileImg");
     const logoImg = document.getElementById("logoImg");
     const placeholder = document.getElementById("placeholder");
-    const shareLinkedinBtn = document.getElementById("shareLinkedinBtn");
-    const shareInstaBtn = document.getElementById("shareInstaBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
 
     function setStep(step) {
       state.step = step;
@@ -557,12 +564,6 @@
       URL.revokeObjectURL(url);
     }
 
-    function makeCaption() {
-      const n = previewName.textContent;
-      const d = previewDesignation.textContent;
-      return `Excited to join Wipro!\n${n} - ${d}\n#Wipro #NewBeginnings`;
-    }
-
     steps.forEach((stepEl) => {
       const toggle = stepEl.querySelector(".step-toggle");
       toggle.addEventListener("click", () => setStep(Number(stepEl.dataset.step)));
@@ -589,25 +590,10 @@
       reader.readAsDataURL(file);
     });
 
-    shareLinkedinBtn.addEventListener("click", async () => {
+    downloadBtn.addEventListener("click", async () => {
       if (!state.exportedBlob) state.exportedBlob = await exportCardBlob();
-      const caption = makeCaption();
-      await navigator.clipboard.writeText(caption).catch(() => {});
-      const shareUrl = "https://www.linkedin.com/feed/";
-      window.open(shareUrl, "_blank", "noopener");
-      alert("LinkedIn opened. Caption copied to clipboard and image downloaded.");
       const safeName = (previewName.textContent || "welcome-card").replace(/\s+/g, "-").toLowerCase();
       downloadBlob(state.exportedBlob, `${safeName}-welcome-card.png`);
-    });
-
-    shareInstaBtn.addEventListener("click", async () => {
-      if (!state.exportedBlob) state.exportedBlob = await exportCardBlob();
-      const caption = makeCaption();
-      await navigator.clipboard.writeText(caption).catch(() => {});
-      const safeName = (previewName.textContent || "welcome-card").replace(/\s+/g, "-").toLowerCase();
-      downloadBlob(state.exportedBlob, `${safeName}-welcome-card.png`);
-      window.open("https://www.instagram.com/", "_blank", "noopener");
-      alert("Instagram opened. Image downloaded and caption copied.");
     });
 
     renderSwatches();
