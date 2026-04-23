@@ -121,7 +121,7 @@
 
     .step-content {
       display: none;
-      padding: 0 14px 14px;
+      padding: 14px 14px;
       border-top: 1px solid #dbe5ff;
     }
 
@@ -387,9 +387,62 @@
     }
 
     @media (max-width: 980px) {
-      .app { grid-template-columns: 1fr; }
-      .preview-wrap { min-height: 460px; }
-      .card { transform: scale(0.82); transform-origin: center center; }
+      body { padding: 16px; }
+      .app {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .title {
+        font-size: 27px;
+        margin: 0 0 1.1rem;
+      }
+      .preview-wrap {
+        min-height: 420px;
+        padding: 14px;
+      }
+      .card {
+        transform: scale(0.82);
+        transform-origin: center center;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 12px; }
+      .panel { padding: 14px; }
+      .title {
+        font-size: 24px;
+        line-height: 1.2;
+      }
+      .step button.step-toggle {
+        font-size: 13px;
+        padding: 11px 12px;
+      }
+      .step-content { padding: 12px; }
+      .btn-row {
+        grid-template-columns: 1fr;
+        margin-top: 10px;
+      }
+      .swatches {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .preview-wrap {
+        padding: 10px;
+        min-height: 350px;
+      }
+      .card {
+        transform: scale(0.68);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .title { font-size: 21px; }
+      .preview-wrap {
+        padding: 6px;
+        min-height: 290px;
+      }
+      .card {
+        transform: scale(0.56);
+      }
     }
   </style>
 </head>
