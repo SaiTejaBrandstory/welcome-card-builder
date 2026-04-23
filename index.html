@@ -297,12 +297,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 740px;
+      min-height: 560px;
     }
 
     .card {
       width: 360px;
-      height: 640px;
+      height: 450px;
       border-radius: 4px;
       position: relative;
       overflow: hidden;
@@ -314,17 +314,17 @@
 
     .logo {
       position: absolute;
-      right: 22px;
-      top: 22px;
-      width: 94px;
+      right: 16px;
+      top: 14px;
+      width: 74px;
       object-fit: contain;
       opacity: 0.95;
     }
 
     .photo-frame {
-      margin: 105px auto 32px;
-      width: 220px;
-      height: 220px;
+      margin: 64px auto 18px;
+      width: 152px;
+      height: 152px;
       border-radius: 50%;
       overflow: hidden;
       background: #c7d8e7;
@@ -347,11 +347,11 @@
 
     .name {
       margin: 0;
-      font-size: 48px;
+      font-size: 42px;
       line-height: 0.92;
       font-weight: 800;
       color: #fff;
-      transform: scale(0.6);
+      transform: scale(0.52);
       transform-origin: center top;
       width: 200%;
       margin-left: -50%;
@@ -359,22 +359,22 @@
 
     .designation {
       margin: -2px 0 0;
-      font-size: 34px;
+      font-size: 28px;
       font-weight: 700;
       color: #fff;
-      transform: scale(0.7);
+      transform: scale(0.55);
       transform-origin: center top;
       width: 200%;
       margin-left: -50%;
     }
 
     .message {
-      margin: 36px 10px 0;
-      font-size: 56px;
+      margin: 16px 10px 0;
+      font-size: 44px;
       line-height: 1.2;
       color: #e8f1e8;
       font-style: italic;
-      transform: scale(0.5);
+      transform: scale(0.42);
       transform-origin: center top;
       width: 200%;
       margin-left: -50%;
@@ -546,7 +546,7 @@
 
     async function exportCardBlob() {
       const canvas = await html2canvas(card, {
-        scale: 2,
+        scale: 3,
         backgroundColor: null,
         useCORS: true
       });
