@@ -6,7 +6,7 @@
   <title>Wipro Welcome Card Builder</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     :root {
@@ -48,9 +48,12 @@
 
     .title {
       margin: 0 0 6px;
-      font-size: 28px;
+      font-family: "Manrope", "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 31px;
       font-weight: 800;
-      letter-spacing: 0.2px;
+      line-height: 1.22;
+      letter-spacing: -0.2px;
+      color: #1d2c55;
     }
 
     .subtitle {
@@ -189,6 +192,56 @@
       color: #fff;
     }
 
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 700;
+      border: none;
+      color: #fff;
+    }
+
+    .share-btn .icon-chip {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .share-btn .icon-chip svg {
+      width: 14px;
+      height: 14px;
+      display: block;
+    }
+
+    #shareLinkedinBtn {
+      background: #0a66c2;
+    }
+
+    #shareLinkedinBtn .icon-chip {
+      background: #ffffff;
+      color: #0a66c2;
+    }
+
+    #shareLinkedinBtn:hover {
+      background: #0958a8;
+    }
+
+    #shareInstaBtn {
+      background: linear-gradient(135deg, #f58529 0%, #dd2a7b 45%, #8134af 75%, #515bd4 100%);
+    }
+
+    #shareInstaBtn .icon-chip {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 7px;
+    }
+
     .btn-row {
       display: grid;
       gap: 8px;
@@ -319,24 +372,15 @@
 <body>
   <div class="app">
     <section class="panel">
-      <h1 class="title">Welcome Card Builder</h1>
-      <p class="subtitle">4-step flow: Name + Photo &gt; Background &gt; Preview &gt; Share</p>
+      <h1 class="title">Hello Srilatha, personalise your joining shout out post.</h1>
 
       <div class="steps" id="steps">
         <div class="step active" data-step="1">
-          <button class="step-toggle" type="button"><span class="step-icon">1</span>Name, Photo &amp; Message</button>
+          <button class="step-toggle" type="button"><span class="step-icon">1</span>Photo &amp; Message</button>
           <div class="step-content">
             <div class="field file-field">
               <label for="photoUpload">Upload profile photo</label>
               <input id="photoUpload" type="file" accept="image/*" />
-            </div>
-            <div class="field">
-              <label for="nameInput">Name</label>
-              <input id="nameInput" placeholder="Srilatha Kamble" />
-            </div>
-            <div class="field">
-              <label for="designationInput">Designation</label>
-              <input id="designationInput" placeholder="Sr. Web Developer" />
             </div>
             <div class="field">
               <label for="messageInput">Message</label>
@@ -358,19 +402,25 @@
         </div>
 
         <div class="step" data-step="3">
-          <button class="step-toggle" type="button"><span class="step-icon">3</span>Preview</button>
+          <button class="step-toggle" type="button"><span class="step-icon">3</span>Share (LinkedIn / Instagram)</button>
           <div class="step-content">
-            <button class="btn primary" id="downloadBtn">Download Preview PNG</button>
-            <div class="btn-row"><button class="btn" data-next="4">Next</button></div>
-          </div>
-        </div>
-
-        <div class="step" data-step="4">
-          <button class="step-toggle" type="button"><span class="step-icon">4</span>Share (LinkedIn / Instagram)</button>
-          <div class="step-content">
-            <button class="btn primary" id="shareLinkedinBtn">Share to LinkedIn</button>
+            <button class="btn primary share-btn" id="shareLinkedinBtn">
+              <span class="icon-chip" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false" aria-hidden="true">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.94v5.666H9.351V9h3.414v1.561h.049c.476-.9 1.637-1.85 3.369-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 11.001-4.124 2.062 2.062 0 010 4.124zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.226.792 24 1.771 24h20.451C23.2 24 24 23.226 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+              </span>
+              <span>Share to LinkedIn</span>
+            </button>
             <div style="height:8px"></div>
-            <button class="btn primary" id="shareInstaBtn">Share to Instagram</button>
+            <button class="btn primary share-btn" id="shareInstaBtn">
+              <span class="icon-chip" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" focusable="false" aria-hidden="true">
+                  <path d="M7.75 2C4.575 2 2 4.575 2 7.75v8.5C2 19.425 4.575 22 7.75 22h8.5c3.175 0 5.75-2.575 5.75-5.75v-8.5C22 4.575 19.425 2 16.25 2h-8.5zm0 1.8h8.5a3.95 3.95 0 013.95 3.95v8.5a3.95 3.95 0 01-3.95 3.95h-8.5a3.95 3.95 0 01-3.95-3.95v-8.5A3.95 3.95 0 017.75 3.8zm8.95 1.6a1.15 1.15 0 100 2.3 1.15 1.15 0 000-2.3zM12 7a5 5 0 100 10 5 5 0 000-10zm0 1.8A3.2 3.2 0 1112 15.2 3.2 3.2 0 0112 8.8z"/>
+                </svg>
+              </span>
+              <span>Share to Instagram</span>
+            </button>
             <p class="tiny">Instagram web does not allow direct image post via browser. This button downloads image + copies caption so you can upload quickly.</p>
           </div>
         </div>
@@ -411,8 +461,6 @@
     const steps = Array.from(document.querySelectorAll(".step"));
     const swatches = document.getElementById("swatches");
     const card = document.getElementById("card");
-    const nameInput = document.getElementById("nameInput");
-    const designationInput = document.getElementById("designationInput");
     const messageInput = document.getElementById("messageInput");
     const previewName = document.getElementById("previewName");
     const previewDesignation = document.getElementById("previewDesignation");
@@ -421,7 +469,6 @@
     const profileImg = document.getElementById("profileImg");
     const logoImg = document.getElementById("logoImg");
     const placeholder = document.getElementById("placeholder");
-    const downloadBtn = document.getElementById("downloadBtn");
     const shareLinkedinBtn = document.getElementById("shareLinkedinBtn");
     const shareInstaBtn = document.getElementById("shareInstaBtn");
 
@@ -431,8 +478,6 @@
     }
 
     function renderPreview() {
-      previewName.textContent = nameInput.value.trim() || "Your Name";
-      previewDesignation.textContent = designationInput.value.trim() || "Your Designation";
       previewMessage.textContent = messageInput.value.trim() || "I am excited to join Wipro!";
       card.style.background = state.selectedGradient;
     }
@@ -523,7 +568,7 @@
       btn.addEventListener("click", () => setStep(Number(btn.dataset.next)));
     });
 
-    [nameInput, designationInput, messageInput].forEach((input) =>
+    [messageInput].forEach((input) =>
       input.addEventListener("input", renderPreview)
     );
 
@@ -538,14 +583,6 @@
         placeholder.style.display = "none";
       };
       reader.readAsDataURL(file);
-    });
-
-    downloadBtn.addEventListener("click", async () => {
-      const blob = await exportCardBlob();
-      if (!blob) return;
-      state.exportedBlob = blob;
-      const safeName = (previewName.textContent || "welcome-card").replace(/\s+/g, "-").toLowerCase();
-      downloadBlob(blob, `${safeName}-welcome-card.png`);
     });
 
     shareLinkedinBtn.addEventListener("click", async () => {
